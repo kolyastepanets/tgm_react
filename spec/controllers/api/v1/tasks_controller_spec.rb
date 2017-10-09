@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::ServicesController, type: :controller do
+RSpec.describe Api::V1::TasksController, type: :controller do
   include_context 'auth_user'
 
-  let!(:services) { create_list(:service, 5) }
+  let!(:tasks) { create_list(:task, 5, user: user) }
 
   describe 'GET #index' do
     before do
