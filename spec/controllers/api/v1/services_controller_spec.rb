@@ -4,6 +4,7 @@ RSpec.describe Api::V1::ServicesController, type: :controller do
   include_context 'auth_user'
 
   let!(:services) { create_list(:service, 5) }
+  let!(:number_of_services) { Service::TYPES.count }
 
   describe 'GET #index' do
     before do
@@ -13,6 +14,21 @@ RSpec.describe Api::V1::ServicesController, type: :controller do
     it 'has array of services' do
       resp = ActiveSupport::JSON.decode(response.body)
       expect(resp.count).to eql(5)
+    end
+
+    it 'responds ok' do
+      should respond_with :ok
+    end
+  end
+
+  describe 'GET #types' do
+    before do
+      get :types, format: :json
+    end
+
+    it 'has array type of services' do
+      resp = ActiveSupport::JSON.decode(response.body)
+      expect(resp.count).to eql(number_of_services)
     end
 
     it 'responds ok' do
