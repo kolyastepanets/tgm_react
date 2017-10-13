@@ -1,0 +1,22 @@
+.navbar {
+  margin-bottom: 0;
+}
+.navbar-default {
+  background-color: white;
+  border-color: white;
+  border-bottom-color: #e7e7e7;
+}
+.navbar-default .navbar-brand {
+  color: #FF006A;
+}
+.navbar-nav {
+  margin-left: 20px;
+}
+#map-container {
+  min-height: 900px;
+}
+.task-lists {
+  max-height: 800px;
+  overflow: auto;
+  margin-top: 10px;
+}
