@@ -7,6 +7,7 @@ export default class ListTasks extends React.Component {
     super(props);
 
     this.deleteTask = this.deleteTask.bind(this);
+    this.addTaskToArray = this.addTaskToArray.bind(this);
 
     this.state = {
       tasks: []
@@ -21,6 +22,10 @@ export default class ListTasks extends React.Component {
         this.removeTaskFromArray(id);
       }
     });
+  }
+
+  addTaskToArray(task) {
+    this.state.tasks.push(task)
   }
 
   removeTaskFromArray(id) {
@@ -53,9 +58,9 @@ export default class ListTasks extends React.Component {
 
     return(
       <div>
-        <button className='btn btn-demo new-task-btn' onClick={this.showForm}>New Task</button>
+        <button className='btn btn-demo new-task-btn' onClick={this.showForm} > New Task </button>
         <div className='task-lists'> {tasks} </div>
-        <NewTask services={this.state.services}/>
+        <NewTask services={this.state.services} handleAdd={this.addTaskToArray} />
       </div>
     )
   }

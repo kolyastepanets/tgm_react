@@ -10,10 +10,14 @@ export default class NewTask extends React.Component {
   constructor(props) {
     super(props);
 
+    this.createTask = this.createTask.bind(this);
+    this.assignServiceId = this.assignServiceId.bind(this);
+
     this.state = {
       title: this.props.title,
       serviceTypes: [],
       services: [],
+      serviceId: '',
       referenceToImages: {
         'cook': require('./../../../assets/images/cook.svg'),
         'electrician': require('./../../../assets/images/electrician.svg'),
@@ -35,14 +39,21 @@ export default class NewTask extends React.Component {
     $.ajax({
       url: '/api/v1/tasks',
       type: 'POST',
+      data: {
+        task: {
+          title: this.refs.title.value,
+          service_id: this.state.serviceId
+        }
+      },
       success:(response) => {
         this.addTaskToList(response);
       }
     });
   }
 
-  addTaskToList() {
+  addTaskToList(task) {
     $('#new-task').addClass('hidden');
+    this.props.handleAdd(task);
   }
 
   loadServices(type) {
@@ -56,6 +67,10 @@ export default class NewTask extends React.Component {
         this.setState({ services: response })
       }
     });
+  }
+
+  assignServiceId(id) {
+    this.setState({ serviceId: id })
   }
 
   render() {
@@ -75,9 +90,9 @@ export default class NewTask extends React.Component {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <p className="modal-title new-task-modal__subtitle" onClick={this.createTask}>New task</p>
+              <p className="modal-title new-task-modal__subtitle">New task</p>
               <div id="modal-task-address"></div>
-              <button className='btn btn-primary'>CREATE TASK</button>
+              <button className='btn btn-primary' onClick={this.createTask}>CREATE TASK</button>
             </div>
             <div className="modal-body">
               <div className="task__form-info">
@@ -91,7 +106,7 @@ export default class NewTask extends React.Component {
               </div>
 
               <div className="task__form-info" id='task-services'>
-                <Services services={this.state.services}/>
+                <Services services={this.state.services} handleSelectedService={this.assignServiceId}/>
               </div>
 
               <div className="task__form-info">
