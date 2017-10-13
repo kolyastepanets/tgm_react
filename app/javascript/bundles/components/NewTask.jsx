@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Services from './Services.jsx';
 
 export default class NewTask extends React.Component {
   static propTypes = {
@@ -12,6 +13,7 @@ export default class NewTask extends React.Component {
     this.state = {
       title: this.props.title,
       serviceTypes: [],
+      services: [],
       referenceToImages: {
         'cook': require('./../../../assets/images/cook.svg'),
         'electrician': require('./../../../assets/images/electrician.svg'),
@@ -43,10 +45,23 @@ export default class NewTask extends React.Component {
     $('#new-task').addClass('hidden');
   }
 
+  loadServices(type) {
+    $.ajax({
+      url: '/api/v1/services.json',
+      type: 'GET',
+      data: {
+        type: type
+      },
+      success:(response) => {
+        this.setState({ services: response })
+      }
+    });
+  }
+
   render() {
     let serviceTypes = this.state.serviceTypes.map((type, index) => {
       return (
-        <div key={index} className='task__service-type'>
+        <div key={index} className='task__service-type' onClick={()=>{this.loadServices(type)}}>
           <div>
             <img src={this.state.referenceToImages[type]} />
           </div>
@@ -73,6 +88,10 @@ export default class NewTask extends React.Component {
               <div className="task__form-info">
                 <p className="new-task-modal__subtitle">service type</p>
                 <div id='task-services'> {serviceTypes} </div>
+              </div>
+
+              <div className="task__form-info" id='task-services'>
+                <Services services={this.state.services}/>
               </div>
 
               <div className="task__form-info">

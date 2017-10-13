@@ -8,7 +8,7 @@ RSpec.describe Api::V1::ServicesController, type: :controller do
 
   describe 'GET #index' do
     before do
-      get :index, format: :json
+      get :index, params: { type: 'electrician' }, format: :json
     end
 
     it 'has array of services' do
