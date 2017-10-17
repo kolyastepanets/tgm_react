@@ -1,8 +1,9 @@
 import React from 'react';
 
 export default class Services extends React.Component {
-  selectService(id) {
-    this.props.handleSelectedService(id);
+  selectService(e) {
+    debugger
+    this.props.handleSelectedService(service.id);
   }
 
   render() {
@@ -15,7 +16,7 @@ export default class Services extends React.Component {
       services = this.props.services.map((service, index) => {
         return (
           <div key={index}>
-            <p className="service-name" onClick={()=>{this.selectService(service.id)}}>{service.name}</p>
+            <p className="service-name" onClick={this.selectService}>{service.name}</p>
           </div>
         )
       })

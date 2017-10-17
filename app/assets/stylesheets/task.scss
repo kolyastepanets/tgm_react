@@ -82,6 +82,9 @@
   .task__service-type {
     margin-left: 10px;
     display: inline-block;
+    &:hover {
+      text-decoration: underline;
+    }
     .task__service-type-name {
       font-size: 11px;
       margin-top: 5px;
@@ -102,4 +105,13 @@
   .task__service-type:first-child {
     margin-left: 0;
   }
+}
+.active-type-service {
+  border: 1px solid #4C71FE;
+  border-radius: 40px;
+}
+.active-service {
+  border: 1px solid black;
+  border-radius: 20px;
+  cursor: pointer;
 }

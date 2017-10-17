@@ -52,6 +52,8 @@ export default class NewTask extends React.Component {
   }
 
   loadServices(type) {
+    this.addActiveClass(type)
+
     $.ajax({
       url: '/api/v1/services.json',
       type: 'GET',
@@ -68,10 +70,15 @@ export default class NewTask extends React.Component {
     this.setState({ serviceId: id })
   }
 
+  addActiveClass(type) {
+    $(".active-type-service").removeClass('active-type-service')
+    $(`[data-type-name="${type}"] div`).addClass('active-type-service');
+  }
+
   render() {
     let serviceTypes = this.state.serviceTypes.map((type, index) => {
       return (
-        <div key={index} className='task__service-type' onClick={()=>{this.loadServices(type)}}>
+        <div key={index} className='task__service-type' onClick={()=>{this.loadServices(type)}} data-type-name={type}>
           <div>
             <img src={this.state.referenceToImages[type]} />
           </div>
