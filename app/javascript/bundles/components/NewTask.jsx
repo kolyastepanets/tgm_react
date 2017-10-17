@@ -46,14 +46,9 @@ export default class NewTask extends React.Component {
         }
       },
       success:(response) => {
-        this.addTaskToList(response);
+        this.props.handleSubmit(response);
       }
     });
-  }
-
-  addTaskToList(task) {
-    $('#new-task').addClass('hidden');
-    this.props.handleAdd(task);
   }
 
   loadServices(type) {
