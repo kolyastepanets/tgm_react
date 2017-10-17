@@ -1,11 +1,11 @@
 import ReactOnRails from 'react-on-rails';
 
+import Body from '../bundles/components/Body';
 import GoogleMap from '../bundles/components/GoogleMap';
 import HelloWorld from '../bundles/components/HelloWorld';
-import ListTasks from '../bundles/components/ListTasks';
 
 ReactOnRails.register({
+  Body,
   GoogleMap,
-  ListTasks,
   HelloWorld
 });
