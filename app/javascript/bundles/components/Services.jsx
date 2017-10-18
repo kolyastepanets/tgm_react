@@ -1,8 +1,14 @@
 import React from 'react';
 
 export default class Services extends React.Component {
-  selectService(id) {
-    this.props.handleSelectedService(id);
+  selectService(service, event) {
+    this.makeActive(event);
+    this.props.handleSelectedService(service.id);
+  }
+
+  makeActive(event) {
+    $('.service-name').removeClass('active-service');
+    $(event.currentTarget).addClass('active-service');
   }
 
   render() {
@@ -15,7 +21,7 @@ export default class Services extends React.Component {
       services = this.props.services.map((service, index) => {
         return (
           <div key={index}>
-            <p className="service-name" onClick={()=>{this.selectService(service.id)}}>{service.name}</p>
+            <p className="service-name" onClick={this.selectService.bind(this, service)}>{service.name}</p>
           </div>
         )
       })
@@ -27,6 +33,7 @@ export default class Services extends React.Component {
       <div>
         {title}
         {services}
+        <div className='service-errors hidden'></div>
       </div>
     );
   }

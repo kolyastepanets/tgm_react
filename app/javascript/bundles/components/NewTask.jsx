@@ -3,10 +3,6 @@ import React from 'react';
 import Services from './Services.jsx';
 
 export default class NewTask extends React.Component {
-  static propTypes = {
-    title: PropTypes.string, // this is passed from the Rails view
-  };
-
   constructor(props) {
     super(props);
 
@@ -14,7 +10,7 @@ export default class NewTask extends React.Component {
     this.assignServiceId = this.assignServiceId.bind(this);
 
     this.state = {
-      title: this.props.title,
+      title: '',
       serviceTypes: [],
       services: [],
       serviceId: '',
@@ -27,6 +23,11 @@ export default class NewTask extends React.Component {
         'pointer': require('./../../../assets/images/pointer.svg')
       }
     };
+  }
+
+  clearServiceErrors() {
+    $('.service-errors').addClass('hidden');
+    $('.service-errors').empty();
   }
 
   componentDidMount() {
@@ -47,11 +48,30 @@ export default class NewTask extends React.Component {
       },
       success:(response) => {
         this.props.handleSubmit(response);
+        this.refs.title.value = '';
+        this.setState({ serviceId: null });
+        $(".active-type-service").removeClass('active-type-service');
+        $('.service-name').removeClass('active-service');
+        this.clearServiceErrors();
+      },
+      error:(response) => {
+        this.clearServiceErrors();
+        let errors = response.responseJSON.errors;
+        if (errors.service.length) {
+          $('.service-errors').removeClass('hidden');
+          $.each(errors, (key, val) => {
+            $(".service-errors").append(`<li>${val[0]}</li>`);
+          });
+        }
       }
     });
   }
 
   loadServices(type) {
+    this.addActiveClass(type);
+    this.clearServiceErrors();
+    this.setState({ serviceId: null });
+
     $.ajax({
       url: '/api/v1/services.json',
       type: 'GET',
@@ -68,10 +88,15 @@ export default class NewTask extends React.Component {
     this.setState({ serviceId: id })
   }
 
+  addActiveClass(type) {
+    $(".active-type-service").removeClass('active-type-service')
+    $(`[data-type-name="${type}"] div`).addClass('active-type-service');
+  }
+
   render() {
     let serviceTypes = this.state.serviceTypes.map((type, index) => {
       return (
-        <div key={index} className='task__service-type' onClick={()=>{this.loadServices(type)}}>
+        <div key={index} className='task__service-type' onClick={()=>{this.loadServices(type)}} data-type-name={type}>
           <div>
             <img src={this.state.referenceToImages[type]} />
           </div>
