@@ -1,8 +1,11 @@
 import React from 'react';
+import * as actions from '../actions/taskActions';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
-export default class Task extends React.Component {
+class Task extends React.Component {
   handleDelete (id) {
-    this.props.handleDelete(id);
+    this.props.pageActions.removeTask(id);
   }
 
   render() {
@@ -20,3 +23,11 @@ export default class Task extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({bla: state});
+
+const mapDispatchToProps = (dispatch) => ({
+  pageActions: bindActionCreators(actions, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Task)

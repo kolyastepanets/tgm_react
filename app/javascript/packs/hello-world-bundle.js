@@ -1,10 +1,8 @@
 import ReactOnRails from 'react-on-rails';
 
-import AppStart from '../bundles/startup/appStart';
-import GoogleMap from '../bundles/components/GoogleMap';
+import HelloWorldApp from '../bundles/HelloWorld/startup/HelloWorldApp';
 
 // This is how react_on_rails can see the HelloWorld in the browser.
 ReactOnRails.register({
-  AppStart,
-  GoogleMap
+  HelloWorldApp,
 });
