@@ -11,6 +11,13 @@ export default class Services extends React.Component {
     $(event.currentTarget).addClass('active-service');
   }
 
+  getClassName(service) {
+    let activeClass = this.props.task.service.name == service.name ? ' active-service' : ''
+    return (
+      'service-name' + activeClass
+    )
+  }
+
   render() {
     let services
     let title
@@ -21,7 +28,7 @@ export default class Services extends React.Component {
       services = this.props.services.map((service, index) => {
         return (
           <div key={index}>
-            <p className="service-name" onClick={this.selectService.bind(this, service)}>{service.name}</p>
+            <p className={this.getClassName(service)} onClick={this.selectService.bind(this, service)}>{service.name}</p>
           </div>
         )
       })

@@ -3,22 +3,17 @@ import Task from './Task.jsx';
 
 export default class ListTasks extends React.Component {
   showForm() {
-    $('#new-task').removeClass('hidden');
+    $('#new-task').removeClass('hidden').animate({ 'right': '470px' }, 'slow' );
   }
 
   render() {
-    let tasks;
-
-    // very strange if !!!
-    if (this.props.tasks) {
-      tasks = this.props.tasks.map((task) => {
-        return (
-          <div key={task.id}>
-            <Task task={task} />
-          </div>
-        )
-      })
-    }
+    let tasks = this.props.tasks.map((task) => {
+      return (
+        <div key={task.id}>
+          <Task task={task} />
+        </div>
+      )
+    })
 
     return(
       <div>
