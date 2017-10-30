@@ -2,12 +2,12 @@ class Api::V1::TasksController < Api::V1::BaseController
   before_action :load_task, only: [:update, :destroy]
 
   def index
-    render json: Task.includes(:service, :user)
+    render json: Task.includes(:service, :user).order(:created_at)
   end
 
   def create
     task = Task.create(task_params)
-    render json: task
+    respond_with :api, :v1, task
   end
 
   def update

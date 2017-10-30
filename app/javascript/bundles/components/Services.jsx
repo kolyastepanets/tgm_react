@@ -15,7 +15,13 @@ class Services extends React.Component {
   }
 
   getClassName(service) {
-   let activeClass = this.props.task.service.name == service.name ? ' active-service' : ''
+    let activeClass
+    if (this.props.task.service && this.props.task.service.name == service.name) {
+      activeClass = ' active-service'
+    } else {
+      activeClass = ''
+    }
+
     return (
       'service-name' + activeClass
     )

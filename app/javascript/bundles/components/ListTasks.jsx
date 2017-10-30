@@ -1,10 +1,13 @@
 import React from 'react';
 import Task from './Task.jsx';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+import * as TaskActions from '../actions/taskActions';
 
 class ListTasks extends React.Component {
   showForm() {
     $('#new-task').removeClass('hidden').animate({ 'right': '470px' }, 'slow' );
+    this.props.actions.editTask({});
   }
 
   render() {
@@ -18,7 +21,7 @@ class ListTasks extends React.Component {
 
     return(
       <div>
-        <button className='btn btn-demo new-task-btn' onClick={this.showForm} > New Task </button>
+        <button className='btn btn-demo new-task-btn' onClick={()=>{this.showForm()}} > New Task </button>
         <div className='task-lists'> {tasks} </div>
       </div>
     )
@@ -30,4 +33,9 @@ const mapStateToProps = (state) => ({
   servicesContainer: state.service
 });
 
-export default connect(mapStateToProps)(ListTasks);
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(TaskActions, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListTasks)

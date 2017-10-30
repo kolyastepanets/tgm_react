@@ -1,5 +1,6 @@
 import {
   EDIT_TASK,
+  TASK_CREATE,
   TASK_UPDATE,
   LISTS_TASKS,
   REMOVE_TASK
@@ -12,6 +13,11 @@ const initialState = {
 
 const taskReducer = (state = initialState, action) => {
   switch (action.type) {
+    case TASK_CREATE:
+      return {
+        ...state,
+        tasks: [...state.tasks, action.payload]
+      };
     case TASK_UPDATE:
       return {
         ...state,
