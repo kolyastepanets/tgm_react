@@ -1,9 +1,34 @@
-import { TASK_UPDATE, LISTS_TASKS, REMOVE_TASK } from '../constants/taskConstants';
+import {
+  EDIT_TASK,
+  TASK_UPDATE,
+  LISTS_TASKS,
+  REMOVE_TASK
+} from '../constants/taskConstants';
 
-const taskReducer = (state = {}, action) => {
+const initialState = {
+  task: {title: '', service: {}},
+  tasks: []
+}
+
+const taskReducer = (state = initialState, action) => {
   switch (action.type) {
     case TASK_UPDATE:
-      return action.text;
+      return {
+        ...state,
+        task: action.payload,
+        tasks: state.tasks.map(task => {
+          if (task.id !== action.payload.id) {
+            return task;
+          }
+          return {
+            ...task,
+            title: action.payload.title,
+            service: action.payload.service
+          };
+        })
+      };
+    case EDIT_TASK:
+      return {...state, task: action.payload};
     case LISTS_TASKS:
       return {...state, tasks: action.payload};
     case REMOVE_TASK:

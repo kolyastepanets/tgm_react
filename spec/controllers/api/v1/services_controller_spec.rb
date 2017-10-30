@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::ServicesController, type: :controller do
   include_context 'auth_user'
 
-  let!(:services) { create_list(:service, 5) }
+  let!(:services) { create_list(:service, 5, classification: 'electrician') }
   let!(:number_of_services) { Service::TYPES.count }
 
   describe 'GET #index' do
