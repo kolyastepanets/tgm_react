@@ -1,9 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+import * as actions from '../actions/serviceActions';
 
-export default class Services extends React.Component {
+class Services extends React.Component {
   selectService(service, event) {
     this.makeActive(event);
-    this.props.handleSelectedService(service.id);
+    this.props.serviceActions.setServiceId(service.id);
   }
 
   makeActive(event) {
@@ -12,7 +15,7 @@ export default class Services extends React.Component {
   }
 
   getClassName(service) {
-    let activeClass = this.props.task.service.name == service.name ? ' active-service' : ''
+   let activeClass = this.props.task.service.name == service.name ? ' active-service' : ''
     return (
       'service-name' + activeClass
     )
@@ -28,7 +31,8 @@ export default class Services extends React.Component {
       services = this.props.services.map((service, index) => {
         return (
           <div key={index}>
-            <p className={this.getClassName(service)} onClick={this.selectService.bind(this, service)}>{service.name}</p>
+            <p className={this.getClassName(service)}
+               onClick={this.selectService.bind(this, service)}>{service.name}</p>
           </div>
         )
       })
@@ -45,3 +49,9 @@ export default class Services extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  serviceActions: bindActionCreators(actions, dispatch)
+});
+
+export default connect(null, mapDispatchToProps)(Services)

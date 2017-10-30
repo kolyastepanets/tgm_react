@@ -2,5 +2,3 @@ export const EDIT_TASK = 'EDIT_TASK';
 export const TASK_UPDATE = 'TASK_UPDATE';
 export const LISTS_TASKS = 'LISTS_TASKS';
 export const REMOVE_TASK = 'REMOVE_TASK';
-export const LISTS_SERVICES = 'LISTS_SERVICES';
-export const LISTS_SERVICE_TYPES = 'LISTS_SERVICE_TYPES';

@@ -1,13 +1,14 @@
 import React from 'react';
 import Task from './Task.jsx';
+import { connect } from 'react-redux';
 
-export default class ListTasks extends React.Component {
+class ListTasks extends React.Component {
   showForm() {
     $('#new-task').removeClass('hidden').animate({ 'right': '470px' }, 'slow' );
   }
 
   render() {
-    let tasks = this.props.tasks.map((task) => {
+    let tasks = this.props.tasksContainer.tasks.map((task) => {
       return (
         <div key={task.id}>
           <Task task={task} />
@@ -23,3 +24,10 @@ export default class ListTasks extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  tasksContainer: state.task,
+  servicesContainer: state.service
+});
+
+export default connect(mapStateToProps)(ListTasks);

@@ -1,6 +1,4 @@
 import {
-  LISTS_SERVICE_TYPES,
-  LISTS_SERVICES,
   EDIT_TASK,
   TASK_UPDATE,
   LISTS_TASKS,
@@ -9,9 +7,7 @@ import {
 
 const initialState = {
   task: {title: '', service: {}},
-  tasks: [],
-  services: [],
-  serviceTypes: []
+  tasks: []
 }
 
 const taskReducer = (state = initialState, action) => {
@@ -26,10 +22,10 @@ const taskReducer = (state = initialState, action) => {
           }
           return {
             ...task,
-            title: action.payload.title
+            title: action.payload.title,
+            service: action.payload.service
           };
-        }),
-        services: []
+        })
       };
     case EDIT_TASK:
       return {...state, task: action.payload};
@@ -37,10 +33,6 @@ const taskReducer = (state = initialState, action) => {
       return {...state, tasks: action.payload};
     case REMOVE_TASK:
       return {...state, tasks: state.tasks.filter((task) => { return task.id != action.payload })};
-    case LISTS_SERVICES:
-      return {...state, services: action.payload};
-    case LISTS_SERVICE_TYPES:
-      return {...state, serviceTypes: action.payload};
     default:
       return state;
   }

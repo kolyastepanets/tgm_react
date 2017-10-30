@@ -4,9 +4,7 @@ import {
   EDIT_TASK,
   TASK_UPDATE,
   LISTS_TASKS,
-  REMOVE_TASK,
-  LISTS_SERVICES,
-  LISTS_SERVICE_TYPES
+  REMOVE_TASK
 } from '../constants/taskConstants';
 
 export const loadTasks = () => {
@@ -20,43 +18,18 @@ export const loadTasks = () => {
   }
 }
 
-export const loadServices = (type) => {
-  return (dispatch) => {
-    axios.get(`/api/v1/services.json`, {
-      params: {
-        type: type
-      }
-    }).then((response) => {
-      dispatch({
-        type: LISTS_SERVICES,
-        payload: response.data
-      });
-    });
-  }
-}
-
-export const loadServiceTypes = () => {
-  return (dispatch) => {
-    axios.get(`/api/v1/services/types.json`).then((response) => {
-      dispatch({
-        type: LISTS_SERVICE_TYPES,
-        payload: response.data
-      });
-    });
-  }
-}
-
 export const editTask = (task) => ({
   type: EDIT_TASK,
-  payload: task,
+  payload: task
 })
 
-export const updateTask = (id, title) => {
+export const updateTask = (id, serviceId, title) => {
   return (dispatch) => {
     axios.put(`/api/v1/tasks/${id}`, {
       authenticity_token: ReactOnRails.authenticityToken(),
       task: {
-        title: title
+        title: title,
+        service_id: serviceId
       }
     }).then((response) => {
       dispatch({
