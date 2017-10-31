@@ -32,8 +32,12 @@ class FormTask extends React.Component {
                                     this.props.servicesContainer.serviceId,
                                     this.refs.title.value);
     } else {
-      // create
+      this.props.actions.createTask(this.props.servicesContainer.serviceId,
+                                    this.refs.title.value);
     }
+    this.refs.title.value = '';
+    this.props.actions.setServiceId(null);
+    $('.service-name').removeClass('active-service');
   }
 
   isTaskPresent() {
@@ -92,7 +96,8 @@ class FormTask extends React.Component {
 
               <div className='task__form-info' id='task-services'>
               <Services services={this.props.servicesContainer.services}
-                        task={this.props.tasksContainer.task} />
+                        task={this.props.tasksContainer.task}
+                        errors={this.props.tasksContainer.errors.service} />
               </div>
 
               <div className='task__form-info'>

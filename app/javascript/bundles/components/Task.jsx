@@ -11,7 +11,7 @@ class Task extends React.Component {
 
   handleEdit (task) {
     $('#new-task').removeClass('hidden').animate({ 'right': '470px' }, 'slow' );
-    this.props.actions.editTask(task);
+    this.props.actions.initializeTask(task);
     this.addActiveClassToServiceType(task.service.classification);
     this.props.actions.loadServices(task.service.classification);
   }

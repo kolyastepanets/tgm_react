@@ -1,7 +1,9 @@
 import axios from 'axios'
 
 import {
-  EDIT_TASK,
+  INITIALIZE_TASK,
+  TASK_CREATE_SUCCESS,
+  TASK_CREATE_FAIL,
   TASK_UPDATE,
   LISTS_TASKS,
   REMOVE_TASK
@@ -18,8 +20,28 @@ export const loadTasks = () => {
   }
 }
 
-export const editTask = (task) => ({
-  type: EDIT_TASK,
+export const createTask = (serviceId, title) => {
+  return (dispatch) => {
+    axios.post(`/api/v1/tasks`, {
+        authenticity_token: ReactOnRails.authenticityToken(),
+        task: {
+          title: title,
+          service_id: serviceId
+        }
+      })
+      .then((response) => {
+        dispatch(successCreate(response));
+        dispatch(clearErrors());
+        hideForm();
+      })
+      .catch((error) => {
+        dispatch(showErrors(error));
+      })
+  }
+}
+
+export const initializeTask = (task) => ({
+  type: INITIALIZE_TASK,
   payload: task
 })
 
@@ -27,18 +49,18 @@ export const updateTask = (id, serviceId, title) => {
   return (dispatch) => {
     axios.put(`/api/v1/tasks/${id}`, {
       authenticity_token: ReactOnRails.authenticityToken(),
-      task: {
-        title: title,
-        service_id: serviceId
-      }
-    }).then((response) => {
-      dispatch({
-        type: TASK_UPDATE,
-        payload: response.data
-      });
-    }).then(() => {
-      $('#new-task').animate({ 'right': '0' }, 'slow' );
-    });
+        task: {
+          title: title,
+          service_id: serviceId
+        }
+      })
+      .then((response) => {
+        dispatch({
+          type: TASK_UPDATE,
+          payload: response.data
+        });
+        hideForm();
+      })
   }
 }
 
@@ -51,4 +73,29 @@ export const removeTask = (id) => {
       });
     });
   }
+}
+
+const hideForm = () => {
+  $('#new-task').animate({ 'right': '0' }, 'slow' );
+}
+
+const showErrors = (error) => {
+  return {
+    type: TASK_CREATE_FAIL,
+    payload: error.response.data.errors
+  }
+}
+
+const successCreate = (response) => {
+  return {
+    type: TASK_CREATE_SUCCESS,
+    payload: response.data
+  };
+}
+
+const clearErrors = () => {
+  return {
+    type: TASK_CREATE_FAIL,
+    payload: {service: []}
+  };
 }

@@ -15,7 +15,11 @@ class Services extends React.Component {
   }
 
   getClassName(service) {
-   let activeClass = this.props.task.service.name == service.name ? ' active-service' : ''
+    let activeClass = '';
+    if (this.props.task.service && this.props.task.service.name == service.name) {
+      activeClass = ' active-service'
+    }
+
     return (
       'service-name' + activeClass
     )
@@ -24,6 +28,17 @@ class Services extends React.Component {
   render() {
     let services
     let title
+    let errors
+
+    if (this.props.errors.length) {
+      errors = this.props.errors.map((error, index) => {
+        return (
+          <div key={index} className='service-errors'>
+            <p>{error}</p>
+          </div>
+        )
+      })
+    }
 
     if (this.props.services.length > 0) {
       title = <p className="new-task-modal__subtitle">{this.props.services[0].classification} tasks</p>
@@ -44,7 +59,7 @@ class Services extends React.Component {
       <div>
         {title}
         {services}
-        <div className='service-errors hidden'></div>
+        {errors}
       </div>
     );
   }
