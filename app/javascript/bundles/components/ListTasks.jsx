@@ -21,7 +21,7 @@ class ListTasks extends React.Component {
     })
 
     return(
-      <div>
+      <div className='tasks-lists-wrapper'>
         <button className='btn btn-demo new-task-btn' onClick={()=>{this.showForm()}} > New Task </button>
         <div className='task-lists'> {tasks} </div>
       </div>
