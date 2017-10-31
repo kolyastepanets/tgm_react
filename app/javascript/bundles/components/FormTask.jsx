@@ -34,8 +34,8 @@ class FormTask extends React.Component {
     } else {
       this.props.actions.createTask(this.props.servicesContainer.serviceId,
                                     this.refs.title.value);
+      this.refs.title.value = '';
     }
-    this.refs.title.value = '';
     this.props.actions.setServiceId(null);
     $('.service-name').removeClass('active-service');
   }

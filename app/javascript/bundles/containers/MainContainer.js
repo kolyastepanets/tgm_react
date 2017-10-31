@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ListTasks from '../components/ListTasks.jsx';
 import FormTask from '../components/FormTask.jsx';
+import GoogleMap from '../components/GoogleMap.jsx';
 import { bindActionCreators } from 'redux'
 import * as TaskActions from '../actions/taskActions';
 import * as ServiceActions from '../actions/serviceActions';
@@ -17,6 +18,7 @@ class Body extends React.Component {
       <div>
         <FormTask />
         <ListTasks />
+        <GoogleMap />
       </div>
     )
   }
