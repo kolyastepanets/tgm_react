@@ -1,8 +1,9 @@
 import axios from 'axios'
 
 import {
-  EDIT_TASK,
-  TASK_CREATE,
+  INITIALIZE_TASK,
+  TASK_CREATE_SUCCESS,
+  TASK_CREATE_FAIL,
   TASK_UPDATE,
   LISTS_TASKS,
   REMOVE_TASK
@@ -29,23 +30,18 @@ export const createTask = (serviceId, title) => {
         }
       })
       .then((response) => {
-        dispatch({
-          type: TASK_CREATE,
-          payload: response.data
-        });
+        dispatch(successCreate(response));
+        dispatch(clearErrors());
         hideForm();
-        clearErrors();
-        // crear form
       })
       .catch((error) => {
-        clearErrors();
-        showErrors(error);
+        dispatch(showErrors(error));
       })
   }
 }
 
-export const editTask = (task) => ({
-  type: EDIT_TASK,
+export const initializeTask = (task) => ({
+  type: INITIALIZE_TASK,
   payload: task
 })
 
@@ -84,16 +80,22 @@ const hideForm = () => {
 }
 
 const showErrors = (error) => {
-  let errors = error.response.data.errors;
-  if (errors.service.length) {
-    $('.service-errors').removeClass('hidden');
-    $.each(errors, (key, val) => {
-      $(".service-errors").append(`<li>${val[0]}</li>`);
-    });
+  return {
+    type: TASK_CREATE_FAIL,
+    payload: error.response.data.errors
   }
 }
 
+const successCreate = (response) => {
+  return {
+    type: TASK_CREATE_SUCCESS,
+    payload: response.data
+  };
+}
+
 const clearErrors = () => {
-  $('.service-errors').addClass('hidden');
-  $('.service-errors').empty();
+  return {
+    type: TASK_CREATE_FAIL,
+    payload: {service: []}
+  };
 }

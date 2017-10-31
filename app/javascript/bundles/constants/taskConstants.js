@@ -1,5 +1,6 @@
-export const EDIT_TASK = 'EDIT_TASK';
-export const TASK_CREATE = 'TASK_CREATE';
+export const INITIALIZE_TASK = 'INITIALIZE_TASK';
+export const TASK_CREATE_SUCCESS = 'TASK_CREATE_SUCCESS';
+export const TASK_CREATE_FAIL = 'TASK_CREATE_FAIL';
 export const TASK_UPDATE = 'TASK_UPDATE';
 export const LISTS_TASKS = 'LISTS_TASKS';
 export const REMOVE_TASK = 'REMOVE_TASK';

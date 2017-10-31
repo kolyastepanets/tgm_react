@@ -1,6 +1,7 @@
 import {
-  EDIT_TASK,
-  TASK_CREATE,
+  INITIALIZE_TASK,
+  TASK_CREATE_SUCCESS,
+  TASK_CREATE_FAIL,
   TASK_UPDATE,
   LISTS_TASKS,
   REMOVE_TASK
@@ -8,16 +9,19 @@ import {
 
 const initialState = {
   task: {title: '', service: {}},
-  tasks: []
+  tasks: [],
+  errors: {service: []}
 }
 
 const taskReducer = (state = initialState, action) => {
   switch (action.type) {
-    case TASK_CREATE:
+    case TASK_CREATE_SUCCESS:
       return {
         ...state,
         tasks: [...state.tasks, action.payload]
       };
+    case TASK_CREATE_FAIL:
+      return {...state, errors: action.payload};
     case TASK_UPDATE:
       return {
         ...state,
@@ -33,7 +37,7 @@ const taskReducer = (state = initialState, action) => {
           };
         })
       };
-    case EDIT_TASK:
+    case INITIALIZE_TASK:
       return {...state, task: action.payload};
     case LISTS_TASKS:
       return {...state, tasks: action.payload};

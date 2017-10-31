@@ -3,11 +3,12 @@ import Task from './Task.jsx';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import * as TaskActions from '../actions/taskActions';
+import * as ServiceActions from '../actions/serviceActions';
 
 class ListTasks extends React.Component {
   showForm() {
+    this.props.actions.initializeTask({title: '', service: {}});
     $('#new-task').removeClass('hidden').animate({ 'right': '470px' }, 'slow' );
-    this.props.actions.editTask({});
   }
 
   render() {
@@ -35,7 +36,7 @@ const mapStateToProps = (state) => ({
 
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(TaskActions, dispatch)
+  actions: bindActionCreators({ ...TaskActions, ...ServiceActions }, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListTasks)
