@@ -1,3 +1,11 @@
+html, body, .wrapper, .main-container-wrapper, .form-container, #map-container {
+  height: 100%;
+  width: 100%;
+}
+.wrapper > div {
+  height: 100%;
+  width: 100%;
+}
 .navbar {
   margin-bottom: 0;
 }
@@ -11,9 +19,6 @@
 }
 .navbar-nav {
   margin-left: 20px;
-}
-#map-container {
-  min-height: 900px;
 }
 .task-lists {
   max-height: 800px;

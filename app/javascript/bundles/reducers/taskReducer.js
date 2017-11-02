@@ -8,9 +8,15 @@ import {
 } from '../constants/taskConstants';
 
 const initialState = {
-  task: {title: '', service: {}},
+  task: {
+    title: '',
+    service: {},
+    longtitude: null,
+    latitude: null
+  },
   tasks: [],
-  errors: {service: []}
+  errors: {service: []},
+  showForm: false
 }
 
 const taskReducer = (state = initialState, action) => {
@@ -33,12 +39,14 @@ const taskReducer = (state = initialState, action) => {
           return {
             ...task,
             title: action.payload.title,
-            service: action.payload.service
+            service: action.payload.service,
+            longtitude: action.payload.longtitude,
+            latitude: action.payload.latitude
           };
         })
       };
     case INITIALIZE_TASK:
-      return {...state, task: action.payload};
+      return {...state, task: action.payload, showForm: true };
     case LISTS_TASKS:
       return {...state, tasks: action.payload};
     case REMOVE_TASK:
