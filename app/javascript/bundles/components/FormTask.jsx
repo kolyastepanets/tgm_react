@@ -46,39 +46,35 @@ class FormTask extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState({ title: nextProps.tasksContainer.task.title });
 
-    let marker;
-
     if (nextProps.tasksContainer.showForm && nextProps.tasksContainer.task.id) {
-      let map = new google.maps.Map(document.getElementById('map-container'), this.state.mapDefaultOptions)
-      marker = new google.maps.Marker({
-        position: {
-          lat: (nextProps.tasksContainer.task.latitude),
-          lng: (nextProps.tasksContainer.task.longtitude)
-        },
-        map: map,
-        title: 'Hold and move',
-        draggable: true,
-        icon: this.state.markerImage
-      });
+      let position = {
+        lat: (nextProps.tasksContainer.task.latitude),
+        lng: (nextProps.tasksContainer.task.longtitude)
+      }
 
-      this.reDrawMarker(marker);
-    } else if (nextProps.tasksContainer.showForm && !nextProps.tasksContainer.task.id && !nextProps.servicesContainer.serviceId) {
-      let map = new google.maps.Map(document.getElementById('map-container'), this.state.mapDefaultOptions)
-      marker = new google.maps.Marker({
-        position: {
-          lat: 48.463819,
-          lng: 35.053189
-        },
-        map: map,
-        title: 'Hold and move',
-        draggable: true,
-        icon: this.state.markerImage
-      });
-      this.reDrawMarker(marker);
+      this.reDrawMarker(position);
+    } else if (nextProps.tasksContainer.showForm &&
+                !nextProps.tasksContainer.task.id &&
+                !nextProps.servicesContainer.serviceId) {
+      let position = {
+        lat: 48.463819,
+        lng: 35.053189
+      }
+
+      this.reDrawMarker(position);
     }
   }
 
-  reDrawMarker(marker) {
+  reDrawMarker(position) {
+    let map = new google.maps.Map(document.getElementById('map-container'), this.state.mapDefaultOptions)
+    let marker = new google.maps.Marker({
+      position: position,
+      map: map,
+      title: 'Hold and move',
+      draggable: true,
+      icon: this.state.markerImage
+    });
+
     marker.addListener('dragend', () => {
       this.geocodePosition(marker.getPosition());
     });
