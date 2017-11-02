@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ListTasks from '../components/ListTasks.jsx';
 import FormTask from '../components/FormTask.jsx';
-import GoogleMap from '../components/GoogleMap.jsx';
 import { bindActionCreators } from 'redux'
 import * as TaskActions from '../actions/taskActions';
 import * as ServiceActions from '../actions/serviceActions';
@@ -15,17 +14,16 @@ class Body extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='main-container-wrapper'>
         <FormTask />
         <ListTasks />
-        <GoogleMap />
       </div>
     )
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({...TaskActions, ...ServiceActions }, dispatch)
+  actions: bindActionCreators({ ...TaskActions, ...ServiceActions }, dispatch)
 });
 
 export default connect(null, mapDispatchToProps)(Body)

@@ -20,13 +20,15 @@ export const loadTasks = () => {
   }
 }
 
-export const createTask = (serviceId, title) => {
+export const createTask = (serviceId, state) => {
   return (dispatch) => {
     axios.post(`/api/v1/tasks`, {
         authenticity_token: ReactOnRails.authenticityToken(),
         task: {
-          title: title,
-          service_id: serviceId
+          title: state.title,
+          service_id: serviceId,
+          longtitude: state.longtitude,
+          latitude: state.latitude
         }
       })
       .then((response) => {
@@ -45,13 +47,15 @@ export const initializeTask = (task) => ({
   payload: task
 })
 
-export const updateTask = (id, serviceId, title) => {
+export const updateTask = (id, serviceId, state) => {
   return (dispatch) => {
     axios.put(`/api/v1/tasks/${id}`, {
       authenticity_token: ReactOnRails.authenticityToken(),
         task: {
-          title: title,
-          service_id: serviceId
+          title: state.title,
+          service_id: serviceId,
+          longtitude: state.longtitude,
+          latitude: state.latitude
         }
       })
       .then((response) => {
