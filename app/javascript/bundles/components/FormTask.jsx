@@ -66,7 +66,14 @@ class FormTask extends React.Component {
   }
 
   reDrawMarker(position) {
-    let map = new google.maps.Map(document.getElementById('map-container'), this.state.mapDefaultOptions)
+    let mapOptions = {
+      zoom: 15,
+      center: position,
+      streetViewControl: false,
+      mapTypeControl: false
+    }
+
+    let map = new google.maps.Map(document.getElementById('map-container'), mapOptions)
     let marker = new google.maps.Marker({
       position: position,
       map: map,
