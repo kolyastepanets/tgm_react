@@ -2,28 +2,47 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ListTasks from '../components/ListTasks.jsx';
 import FormTask from '../components/FormTask.jsx';
+import SignInForm from '../components/SignInForm.jsx';
 import { bindActionCreators } from 'redux'
-import * as TaskActions from '../actions/taskActions';
-import * as ServiceActions from '../actions/serviceActions';
+import * as AuthActions from '../actions/authenticateActions';
 
 class Body extends React.Component {
   componentDidMount() {
-    this.props.actions.loadTasks();
-    this.props.actions.loadServiceTypes();
+    let mapDefaultOptions = {
+      zoom: 15,
+      center: {
+        lat: 48.463819,
+        lng: 35.053189
+      },
+      streetViewControl: false,
+      mapTypeControl: false
+    }
+
+    new google.maps.Map(document.getElementById('map-container'), mapDefaultOptions)
+    this.props.actions.validateToken();
   }
 
   render() {
     return (
       <div className='main-container-wrapper'>
+        { this.props.authContainer.loggedIn
+            ? <ListTasks />
+            : <SignInForm />
+        }
         <FormTask />
-        <ListTasks />
       </div>
     )
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ ...TaskActions, ...ServiceActions }, dispatch)
+const mapStateToProps = (state) => ({
+  tasksContainer: state.task,
+  servicesContainer: state.service,
+  authContainer: state.auth
 });
 
-export default connect(null, mapDispatchToProps)(Body)
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({ ...AuthActions }, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Body)

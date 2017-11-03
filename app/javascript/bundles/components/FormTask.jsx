@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import * as TaskActions from '../actions/taskActions';
 import * as ServiceActions from '../actions/serviceActions';
+import $ from 'jquery';
 
 class FormTask extends React.Component {
   constructor(props) {
@@ -13,16 +14,7 @@ class FormTask extends React.Component {
     this.state = {
       address: '',
       geocoder: new google.maps.Geocoder(),
-      mapDefaultOptions: {
-        zoom: 15,
-        center: {
-          lat: 48.463819,
-          lng: 35.053189
-        },
-        streetViewControl: false,
-        mapTypeControl: false
-      },
-      markers: [],
+      markerExists: false,
       markerImage: 'https://res.cloudinary.com/djnzkhyxr/image/upload/v1498079839/pointer_iw70le.png',
       title: this.props.tasksContainer.task.title,
       latitude: this.props.tasksContainer.task.latitude,
@@ -40,27 +32,29 @@ class FormTask extends React.Component {
 
   componentDidMount() {
     this.props.actions.setServiceId(this.props.tasksContainer.task.service.id);
-    new google.maps.Map(document.getElementById('map-container'), this.state.mapDefaultOptions)
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({ title: nextProps.tasksContainer.task.title });
 
-    if (nextProps.tasksContainer.showForm && nextProps.tasksContainer.task.id) {
+    if (nextProps.tasksContainer.showForm &&
+          nextProps.tasksContainer.task.id &&
+          !this.state.markerExists) {
       let position = {
         lat: (nextProps.tasksContainer.task.latitude),
         lng: (nextProps.tasksContainer.task.longtitude)
       }
-
+      this.setState({ markerExists: true });
       this.reDrawMarker(position);
     } else if (nextProps.tasksContainer.showForm &&
                 !nextProps.tasksContainer.task.id &&
-                !nextProps.servicesContainer.serviceId) {
+                !nextProps.servicesContainer.serviceId &&
+                !this.state.markerExists) {
       let position = {
         lat: 48.463819,
         lng: 35.053189
       }
-
+      this.setState({ markerExists: true });
       this.reDrawMarker(position);
     }
   }
@@ -211,7 +205,8 @@ class FormTask extends React.Component {
 
 const mapStateToProps = (state) => ({
   tasksContainer: state.task,
-  servicesContainer: state.service
+  servicesContainer: state.service,
+  authContainer: state.auth
 });
 
 const mapDispatchToProps = (dispatch) => ({

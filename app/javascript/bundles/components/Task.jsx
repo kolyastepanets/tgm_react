@@ -1,8 +1,9 @@
 import React from 'react';
 import * as TaskActions from '../actions/taskActions';
 import * as ServiceActions from '../actions/serviceActions';
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import $ from 'jquery';
 
 class Task extends React.Component {
   handleDelete (id) {

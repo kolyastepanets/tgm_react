@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::TasksController, type: :controller do
-  # include_context 'auth_user'
+  include_context 'auth_user'
 
-  let!(:tasks) { create_list(:task, 5) }
+  let!(:tasks) { create_list(:task, 5, user: user) }
   let(:task) { create(:task) }
   let(:new_task) { build(:task) }
   let(:service) { create(:service) }

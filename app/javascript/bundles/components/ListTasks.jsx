@@ -4,8 +4,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import * as TaskActions from '../actions/taskActions';
 import * as ServiceActions from '../actions/serviceActions';
+import $ from 'jquery';
 
 class ListTasks extends React.Component {
+  componentDidMount() {
+    this.props.actions.loadTasks();
+    this.props.actions.loadServiceTypes();
+  }
+
   showForm() {
     this.props.actions.initializeTask({title: '', service: {}});
     $('#new-task').removeClass('hidden').animate({ 'right': '470px' }, 'slow' );
@@ -31,7 +37,8 @@ class ListTasks extends React.Component {
 
 const mapStateToProps = (state) => ({
   tasksContainer: state.task,
-  servicesContainer: state.service
+  servicesContainer: state.service,
+  authContainer: state.auth
 });
 
 
