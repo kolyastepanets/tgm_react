@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import * as TaskActions from '../actions/taskActions';
 import * as ServiceActions from '../actions/serviceActions';
 import $ from 'jquery';
+import Toastr from 'toastr';
 
 class FormTask extends React.Component {
   constructor(props) {
@@ -109,10 +110,18 @@ class FormTask extends React.Component {
     if (this.isTaskPresent()) {
       this.props.actions.updateTask(this.props.tasksContainer.task.id,
                                     this.props.servicesContainer.serviceId,
-                                    this.state);
+                                    this.state)
+        .then(() => Toastr.success('Successfully updated!'))
+        .catch(error => {
+          Toastr.error(error);
+        });
     } else {
       this.props.actions.createTask(this.props.servicesContainer.serviceId,
-                                    this.state);
+                                    this.state)
+        .then(() => Toastr.success('Successfully created!'))
+        .catch(error => {
+          Toastr.error(error);
+        });
     }
     this.props.actions.setServiceId(null);
     $('.service-name').removeClass('active-service');
@@ -128,7 +137,10 @@ class FormTask extends React.Component {
 
   loadServices(type) {
     this.addActiveClass(type);
-    this.props.actions.loadServices(type);
+    this.props.actions.loadServices(type)
+      .catch(error => {
+        Toastr.error(error);
+      });
   }
 
   addActiveClass(type) {
