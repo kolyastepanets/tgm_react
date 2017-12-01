@@ -1,2 +1,2 @@
 FactoryGirl.create_list :service, 20
-FactoryGirl.create :user, email: 'admin@example.com', password: 'password'
+User.create(email: 'admin@example.com', password: 'Testing1').update(tokens: nil)
