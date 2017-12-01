@@ -1,24 +1,13 @@
-# README
+#### Start
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+1. download project
 
-Things you may want to cover:
+2. setup
+```sh
+$ bundle install
+$ cp config/database.yml.sample config/database.yml
+$ rake db:create db:migrate db:seed
+```
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- email: admin@example.com
+- password: password
