@@ -1,6 +1,8 @@
 import {
   SIGN_IN_SUCCESS,
-  SIGN_IN_FAIL
+  SIGN_IN_FAIL,
+  SIGN_OUT_SUCCESS,
+  SIGN_UP_SUCCESS
 } from '../constants/authenticateConstants';
 
 const initialState = {
@@ -16,6 +18,10 @@ const authReducer = (state = initialState, action) => {
     case SIGN_IN_SUCCESS:
       return {...state, loggedIn: action.payload};
     case SIGN_IN_FAIL:
+      return {...state, loggedIn: action.payload};
+    case SIGN_OUT_SUCCESS:
+      return {...state, loggedIn: action.payload};
+    case SIGN_UP_SUCCESS:
       return {...state, loggedIn: action.payload};
     default:
       return state;

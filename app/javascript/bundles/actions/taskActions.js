@@ -7,7 +7,9 @@ import {
   TASK_CREATE_FAIL,
   TASK_UPDATE,
   LISTS_TASKS,
-  REMOVE_TASK
+  REMOVE_TASK,
+  SHOW_FORM,
+  HIDE_FORM
 } from '../constants/taskConstants';
 
 export const loadTasks = () => {
@@ -41,7 +43,7 @@ export const createTask = (serviceId, task) => {
     })
     .then(task => {
       dispatch(successCreate(task));
-      hideForm();
+      dispatch(hideForm());
     })
     .catch(errors => {
       throw errors;
@@ -52,6 +54,16 @@ export const createTask = (serviceId, task) => {
 export const initializeTask = (task) => ({
   type: INITIALIZE_TASK,
   payload: task
+})
+
+export const showForm = () => ({
+  type: SHOW_FORM,
+  payload: true
+})
+
+export const hideForm = () => ({
+  type: HIDE_FORM,
+  payload: false
 })
 
 export const updateTask = (id, serviceId, task) => {
@@ -68,11 +80,8 @@ export const updateTask = (id, serviceId, task) => {
       })
     })
     .then(task => {
-      dispatch({
-        type: TASK_UPDATE,
-        payload: task
-      });
-      hideForm();
+      dispatch(successUpdate(task));
+      dispatch(hideForm());
     })
     .catch(errors => {
       throw errors;
@@ -86,15 +95,12 @@ export const removeTask = (id) => {
     .delete(`/api/v1/tasks/${id}`)
     .then(() => {
       dispatch(successDelete(id));
+      dispatch(hideForm());
     })
     .catch(errors => {
       throw errors;
     })
   }
-}
-
-const hideForm = () => {
-  $('#new-task').animate({ 'right': '0' }, 'slow' );
 }
 
 const showErrors = (error) => {
@@ -105,6 +111,13 @@ const showErrors = (error) => {
 }
 
 const successCreate = (response) => {
+  return {
+    type: TASK_CREATE_SUCCESS,
+    payload: response
+  };
+}
+
+const successUpdate = (response) => {
   return {
     type: TASK_CREATE_SUCCESS,
     payload: response

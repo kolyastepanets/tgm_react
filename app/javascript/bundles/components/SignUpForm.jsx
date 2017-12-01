@@ -11,14 +11,15 @@ class SignInForm extends React.Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      confirm_password: ''
     };
 
     this.redirect = this.redirect.bind(this);
   }
 
   redirect() {
-    Toastr.success('Signed in');
+    Toastr.success('Signed up');
     this.props.router.push('/');
   }
 
@@ -30,8 +31,12 @@ class SignInForm extends React.Component {
     this.setState({ password: value });
   }
 
+  handleChangeConfirmPassword(value) {
+    this.setState({ confirm_password: value });
+  }
+
   signIn() {
-    this.props.actions.signIn(this.state.email, this.state.password)
+    this.props.actions.signUp(this.state.email, this.state.password, this.state.confirm_password)
       .then(() => this.redirect())
       .catch(error => {
         Toastr.error(error);
@@ -49,9 +54,13 @@ class SignInForm extends React.Component {
                placeholder='Enter your password'
                className="form-control"
                onChange={(e) => this.handleChangePassword(e.target.value)}/>
+        <input type="password"
+               placeholder='Confirm your password'
+               className="form-control"
+               onChange={(e) => this.handleChangeConfirmPassword(e.target.value)}/>
         <button className='btn btn-primary'
-                onClick={()=>{this.signIn()}}>Sign In</button>
-        <Link to="#/signup"> Sign Up</Link>
+                onClick={()=>{this.signIn()}}>Sign Up</button>
+        <Link to="#/signin"> Sign In</Link>
       </div>
     );
   }

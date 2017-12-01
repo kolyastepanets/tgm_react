@@ -11,10 +11,10 @@ class Task extends React.Component {
   }
 
   handleEdit (task) {
-    $('#new-task').removeClass('hidden').animate({ 'right': '470px' }, 'slow' );
+    this.props.actions.showForm();
     this.props.actions.initializeTask(task);
-    this.addActiveClassToServiceType(task.service.classification);
     this.props.actions.loadServices(task.service.classification);
+    this.addActiveClassToServiceType(task.service.classification);
   }
 
   addActiveClassToServiceType(type) {

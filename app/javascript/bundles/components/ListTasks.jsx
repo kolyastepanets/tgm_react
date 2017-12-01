@@ -14,7 +14,7 @@ class ListTasks extends React.Component {
 
   showForm() {
     this.props.actions.initializeTask({title: '', service: {}});
-    $('#new-task').removeClass('hidden').animate({ 'right': '470px' }, 'slow' );
+    this.props.actions.showForm();
   }
 
   render() {

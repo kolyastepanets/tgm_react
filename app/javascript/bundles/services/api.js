@@ -23,20 +23,18 @@ const cookiesOnServer = (req, res) => ({
 });
 
 function checkStatus(response) {
-  if(response.url.indexOf('auth/sign_out') > 0 ){
-    return checkSignOutStatus(response);
+  if (response.url.indexOf('auth/sign_out') > 0 ) {
+    location.reload()
+    return response;
   } else if (response.status >= 200 && response.status < 300) {
     return response;
-  } else {
-    return response.json().then(object => {
-      throw object.errors.full_messages ? object.errors.full_messages : object.errors;
+  } else if (response.status === 401) {
+    response.json().then(object => {
+      if (object.errors[0] === 'You need to sign in or sign up before continuing.') {
+        location.reload()
+        return response;
+      }
     });
-  }
-}
-
-function checkSignOutStatus(response) {
-  if (response.status == 404 || 200 || 204) {
-    return response;
   } else {
     return response.json().then(object => {
       throw object.errors.full_messages ? object.errors.full_messages : object.errors;

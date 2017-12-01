@@ -15,18 +15,17 @@ class FormTask extends React.Component {
     this.state = {
       address: '',
       geocoder: new google.maps.Geocoder(),
-      markerExists: false,
       markerImage: 'https://res.cloudinary.com/djnzkhyxr/image/upload/v1498079839/pointer_iw70le.png',
       title: this.props.tasksContainer.task.title,
       latitude: this.props.tasksContainer.task.latitude,
       longtitude: this.props.tasksContainer.task.longtitude,
       referenceToImages: {
         'cook': require('./../../../assets/images/cook.svg'),
-        'electrician': require('./../../../assets/images/electrician.svg'),
-        'gardener': require('./../../../assets/images/gardener.svg'),
-        'housekeeper': require('./../../../assets/images/housekeeper.svg'),
         'plumber': require('./../../../assets/images/plumber.svg'),
-        'pointer': require('./../../../assets/images/pointer.svg')
+        'pointer': require('./../../../assets/images/pointer.svg'),
+        'gardener': require('./../../../assets/images/gardener.svg'),
+        'electrician': require('./../../../assets/images/electrician.svg'),
+        'housekeeper': require('./../../../assets/images/housekeeper.svg')
       }
     };
   }
@@ -39,18 +38,20 @@ class FormTask extends React.Component {
     this.setState({ title: nextProps.tasksContainer.task.title });
 
     if (nextProps.tasksContainer.showForm &&
-          nextProps.tasksContainer.task.id &&
-          !this.state.markerExists) {
+          nextProps.tasksContainer.task.id){
       let position = {
         lat: (nextProps.tasksContainer.task.latitude),
         lng: (nextProps.tasksContainer.task.longtitude)
       }
-      this.setState({ markerExists: true });
+      this.setState({
+        markerExists: true,
+        latitude: nextProps.tasksContainer.task.latitude,
+        longtitude: nextProps.tasksContainer.task.longtitude
+      });
       this.reDrawMarker(position);
     } else if (nextProps.tasksContainer.showForm &&
                 !nextProps.tasksContainer.task.id &&
-                !nextProps.servicesContainer.serviceId &&
-                !this.state.markerExists) {
+                !nextProps.servicesContainer.serviceId) {
       let position = {
         lat: 48.463819,
         lng: 35.053189
@@ -137,10 +138,7 @@ class FormTask extends React.Component {
 
   loadServices(type) {
     this.addActiveClass(type);
-    this.props.actions.loadServices(type)
-      .catch(error => {
-        Toastr.error(error);
-      });
+    this.props.actions.loadServices(type);
   }
 
   addActiveClass(type) {
@@ -167,9 +165,7 @@ class FormTask extends React.Component {
 
     return (
       <div className='form-container'>
-        <div id="map-container"></div>
-
-        <div id='new-task' className='hidden'>
+        <div id='new-task'>
           <div className='modal-dialog'>
             <div className='modal-content'>
               <div className='modal-header'>
@@ -226,4 +222,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormTask)
-
