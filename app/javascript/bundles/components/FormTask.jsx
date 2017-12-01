@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import * as TaskActions from '../actions/taskActions';
 import * as ServiceActions from '../actions/serviceActions';
+import $ from 'jquery';
+import Toastr from 'toastr';
 
 class FormTask extends React.Component {
   constructor(props) {
@@ -13,45 +15,39 @@ class FormTask extends React.Component {
     this.state = {
       address: '',
       geocoder: new google.maps.Geocoder(),
-      mapDefaultOptions: {
-        zoom: 15,
-        center: {
-          lat: 48.463819,
-          lng: 35.053189
-        },
-        streetViewControl: false,
-        mapTypeControl: false
-      },
-      markers: [],
       markerImage: 'https://res.cloudinary.com/djnzkhyxr/image/upload/v1498079839/pointer_iw70le.png',
       title: this.props.tasksContainer.task.title,
       latitude: this.props.tasksContainer.task.latitude,
       longtitude: this.props.tasksContainer.task.longtitude,
       referenceToImages: {
         'cook': require('./../../../assets/images/cook.svg'),
-        'electrician': require('./../../../assets/images/electrician.svg'),
-        'gardener': require('./../../../assets/images/gardener.svg'),
-        'housekeeper': require('./../../../assets/images/housekeeper.svg'),
         'plumber': require('./../../../assets/images/plumber.svg'),
-        'pointer': require('./../../../assets/images/pointer.svg')
+        'pointer': require('./../../../assets/images/pointer.svg'),
+        'gardener': require('./../../../assets/images/gardener.svg'),
+        'electrician': require('./../../../assets/images/electrician.svg'),
+        'housekeeper': require('./../../../assets/images/housekeeper.svg')
       }
     };
   }
 
   componentDidMount() {
     this.props.actions.setServiceId(this.props.tasksContainer.task.service.id);
-    new google.maps.Map(document.getElementById('map-container'), this.state.mapDefaultOptions)
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({ title: nextProps.tasksContainer.task.title });
 
-    if (nextProps.tasksContainer.showForm && nextProps.tasksContainer.task.id) {
+    if (nextProps.tasksContainer.showForm &&
+          nextProps.tasksContainer.task.id){
       let position = {
         lat: (nextProps.tasksContainer.task.latitude),
         lng: (nextProps.tasksContainer.task.longtitude)
       }
-
+      this.setState({
+        markerExists: true,
+        latitude: nextProps.tasksContainer.task.latitude,
+        longtitude: nextProps.tasksContainer.task.longtitude
+      });
       this.reDrawMarker(position);
     } else if (nextProps.tasksContainer.showForm &&
                 !nextProps.tasksContainer.task.id &&
@@ -60,7 +56,7 @@ class FormTask extends React.Component {
         lat: 48.463819,
         lng: 35.053189
       }
-
+      this.setState({ markerExists: true });
       this.reDrawMarker(position);
     }
   }
@@ -115,10 +111,18 @@ class FormTask extends React.Component {
     if (this.isTaskPresent()) {
       this.props.actions.updateTask(this.props.tasksContainer.task.id,
                                     this.props.servicesContainer.serviceId,
-                                    this.state);
+                                    this.state)
+        .then(() => Toastr.success('Successfully updated!'))
+        .catch(error => {
+          Toastr.error(error);
+        });
     } else {
       this.props.actions.createTask(this.props.servicesContainer.serviceId,
-                                    this.state);
+                                    this.state)
+        .then(() => Toastr.success('Successfully created!'))
+        .catch(error => {
+          Toastr.error(error);
+        });
     }
     this.props.actions.setServiceId(null);
     $('.service-name').removeClass('active-service');
@@ -161,9 +165,7 @@ class FormTask extends React.Component {
 
     return (
       <div className='form-container'>
-        <div id="map-container"></div>
-
-        <div id='new-task' className='hidden'>
+        <div id='new-task'>
           <div className='modal-dialog'>
             <div className='modal-content'>
               <div className='modal-header'>
@@ -211,7 +213,8 @@ class FormTask extends React.Component {
 
 const mapStateToProps = (state) => ({
   tasksContainer: state.task,
-  servicesContainer: state.service
+  servicesContainer: state.service,
+  authContainer: state.auth
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -219,4 +222,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormTask)
-

@@ -4,3 +4,5 @@ export const TASK_CREATE_FAIL = 'TASK_CREATE_FAIL';
 export const TASK_UPDATE = 'TASK_UPDATE';
 export const LISTS_TASKS = 'LISTS_TASKS';
 export const REMOVE_TASK = 'REMOVE_TASK';
+export const SHOW_FORM = 'SHOW_FORM';
+export const HIDE_FORM = 'HIDE_FORM';

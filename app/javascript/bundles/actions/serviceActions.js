@@ -1,4 +1,4 @@
-import axios from 'axios'
+import api from '../services/api';
 
 import {
   SET_SERVICE_ID,
@@ -7,29 +7,33 @@ import {
 } from '../constants/serviceConstants';
 
 export const loadServices = (type) => {
-  return (dispatch) => {
-    axios.get(`/api/v1/services.json`, {
-      params: {
-        type: type
-      }
-    }).then((response) => {
+  return dispatch => {
+    return api()
+    .get(`/api/v1/services?type=${type}`)
+    .then(services => {
       dispatch({
         type: LISTS_SERVICES,
-        payload: response.data
-      });
+        payload: services
+      })
+    }).catch(errors => {
+      throw errors;
     });
-  }
+  };
 }
 
 export const loadServiceTypes = () => {
-  return (dispatch) => {
-    axios.get(`/api/v1/services/types.json`).then((response) => {
+  return dispatch => {
+    return api()
+    .get('/api/v1/services/types')
+    .then(serviceTypes => {
       dispatch({
         type: LISTS_SERVICE_TYPES,
-        payload: response.data
-      });
-    });
-  }
+        payload: serviceTypes
+      })
+    }).catch(errors => {
+      throw errors;
+    })
+  };
 }
 
 export const setServiceId = (id) => ({

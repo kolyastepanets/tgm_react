@@ -4,7 +4,9 @@ import {
   TASK_CREATE_FAIL,
   TASK_UPDATE,
   LISTS_TASKS,
-  REMOVE_TASK
+  REMOVE_TASK,
+  SHOW_FORM,
+  HIDE_FORM
 } from '../constants/taskConstants';
 
 const initialState = {
@@ -46,7 +48,11 @@ const taskReducer = (state = initialState, action) => {
         })
       };
     case INITIALIZE_TASK:
-      return {...state, task: action.payload, showForm: true };
+      return {...state, task: action.payload };
+    case SHOW_FORM:
+      return {...state, showForm: action.payload };
+    case HIDE_FORM:
+      return {...state, showForm: action.payload };
     case LISTS_TASKS:
       return {...state, tasks: action.payload};
     case REMOVE_TASK:

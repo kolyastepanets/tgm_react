@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'hello_world', to: 'hello_world#index'
-  root to: 'home#index'
+  root 'application#tasks'
   mount_devise_token_auth_for 'User', at: 'auth'
 
   namespace :api, defaults: { format: 'json' } do

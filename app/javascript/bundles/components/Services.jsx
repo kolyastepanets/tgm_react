@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import * as actions from '../actions/serviceActions';
+import $ from 'jquery';
 
 class Services extends React.Component {
   selectService(service, event) {

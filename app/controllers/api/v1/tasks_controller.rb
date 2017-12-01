@@ -2,11 +2,11 @@ class Api::V1::TasksController < Api::V1::BaseController
   before_action :load_task, only: [:update, :destroy]
 
   def index
-    render json: Task.includes(:service, :user).order(:created_at)
+    render json: current_user.tasks.order(:created_at)
   end
 
   def create
-    task = Task.create(task_params)
+    task = current_user.tasks.create(task_params)
     respond_with :api, :v1, task
   end
 
@@ -17,7 +17,7 @@ class Api::V1::TasksController < Api::V1::BaseController
 
   def destroy
     @task.destroy
-    head :ok
+    head :no_content
   end
 
   private
