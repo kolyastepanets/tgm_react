@@ -9,7 +9,6 @@ import $ from 'jquery';
 class ListTasks extends React.Component {
   componentDidMount() {
     this.props.actions.loadTasks();
-    this.props.actions.loadServiceTypes();
   }
 
   showForm() {

@@ -20,19 +20,4 @@ RSpec.describe Api::V1::ServicesController, type: :controller do
       should respond_with :ok
     end
   end
-
-  describe 'GET #types' do
-    before do
-      get :types, format: :json
-    end
-
-    it 'has array type of services' do
-      resp = ActiveSupport::JSON.decode(response.body)
-      expect(resp.count).to eql(number_of_services)
-    end
-
-    it 'responds ok' do
-      should respond_with :ok
-    end
-  end
 end

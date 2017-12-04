@@ -119,7 +119,7 @@ const successCreate = (response) => {
 
 const successUpdate = (response) => {
   return {
-    type: TASK_CREATE_SUCCESS,
+    type: TASK_UPDATE,
     payload: response
   };
 }

@@ -1,29 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux'
-import * as actions from '../actions/serviceActions';
-import $ from 'jquery';
 
 class Services extends React.Component {
-  selectService(service, event) {
-    this.makeActive(event);
-    this.props.serviceActions.setServiceId(service.id);
+  selectService(id) {
+    this.props.setServiceId(id);
   }
 
-  makeActive(event) {
-    $('.service-name').removeClass('active-service');
-    $(event.currentTarget).addClass('active-service');
-  }
-
-  getClassName(service) {
-    let activeClass = '';
-    if (this.props.task.service && this.props.task.service.name == service.name) {
-      activeClass = ' active-service'
-    }
-
-    return (
-      'service-name' + activeClass
-    )
+  isActive(id) {
+    return this.props.serviceId === id
   }
 
   render() {
@@ -44,11 +27,11 @@ class Services extends React.Component {
     if (this.props.services.length > 0) {
       title = <p className="new-task-modal__subtitle">{this.props.services[0].classification} tasks</p>
 
-      services = this.props.services.map((service, index) => {
+      services = this.props.services.map((service) => {
         return (
-          <div key={index}>
-            <p className={this.getClassName(service)}
-               onClick={this.selectService.bind(this, service)}>{service.name}</p>
+          <div key={service.id}>
+            <p className={this.isActive(service.id) ? 'service-name active-service' : 'service-name'}
+               onClick={()=>{this.selectService(service.id)}}>{service.name}</p>
           </div>
         )
       })
@@ -66,8 +49,4 @@ class Services extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  serviceActions: bindActionCreators(actions, dispatch)
-});
-
-export default connect(null, mapDispatchToProps)(Services)
+export default Services;

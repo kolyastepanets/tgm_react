@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Services from './Services.jsx';
+import Services from './Services';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import * as TaskActions from '../actions/taskActions';
@@ -14,11 +14,14 @@ class FormTask extends React.Component {
 
     this.state = {
       address: '',
+      activeServiceType: this.props.tasksContainer.task.service.classification,
+      activeServiceId: this.props.tasksContainer.task.service.id,
       geocoder: new google.maps.Geocoder(),
       markerImage: 'https://res.cloudinary.com/djnzkhyxr/image/upload/v1498079839/pointer_iw70le.png',
       title: this.props.tasksContainer.task.title,
       latitude: this.props.tasksContainer.task.latitude,
       longtitude: this.props.tasksContainer.task.longtitude,
+      serviceTypes: ['electrician', 'plumber', 'gardener', 'housekeeper', 'cook'],
       referenceToImages: {
         'cook': require('./../../../assets/images/cook.svg'),
         'plumber': require('./../../../assets/images/plumber.svg'),
@@ -28,10 +31,8 @@ class FormTask extends React.Component {
         'housekeeper': require('./../../../assets/images/housekeeper.svg')
       }
     };
-  }
 
-  componentDidMount() {
-    this.props.actions.setServiceId(this.props.tasksContainer.task.service.id);
+    this.setServiceId = this.setServiceId.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -51,7 +52,7 @@ class FormTask extends React.Component {
       this.reDrawMarker(position);
     } else if (nextProps.tasksContainer.showForm &&
                 !nextProps.tasksContainer.task.id &&
-                !nextProps.servicesContainer.serviceId) {
+                !this.state.activeServiceId) {
       let position = {
         lat: 48.463819,
         lng: 35.053189
@@ -59,6 +60,10 @@ class FormTask extends React.Component {
       this.setState({ markerExists: true });
       this.reDrawMarker(position);
     }
+  }
+
+  setServiceId(id) {
+    this.setState({ activeServiceId: id })
   }
 
   reDrawMarker(position) {
@@ -110,21 +115,20 @@ class FormTask extends React.Component {
   manageTask() {
     if (this.isTaskPresent()) {
       this.props.actions.updateTask(this.props.tasksContainer.task.id,
-                                    this.props.servicesContainer.serviceId,
+                                    this.state.activeServiceId,
                                     this.state)
         .then(() => Toastr.success('Successfully updated!'))
         .catch(error => {
           Toastr.error(error);
         });
     } else {
-      this.props.actions.createTask(this.props.servicesContainer.serviceId,
+      this.props.actions.createTask(this.state.activeServiceId,
                                     this.state)
         .then(() => Toastr.success('Successfully created!'))
         .catch(error => {
           Toastr.error(error);
         });
     }
-    $('.service-name').removeClass('active-service');
   }
 
   isTaskPresent() {
@@ -136,25 +140,24 @@ class FormTask extends React.Component {
   }
 
   loadServices(type) {
-    this.addActiveClass(type);
     this.props.actions.loadServices(type);
-  }
-
-  addActiveClass(type) {
-    $(".active-type-service").removeClass('active-type-service')
-    $(`[data-type-name="${type}"] div`).addClass('active-type-service');
+    this.setState({ activeServiceType: type })
   }
 
   handleChange(value) {
     this.setState({ title: value });
   }
 
+  isActive(type) {
+    return this.state.activeServiceType === type;
+  }
+
   render() {
-    let serviceTypes = this.props.servicesContainer.serviceTypes.map((type, index) => {
+    let serviceTypes = this.state.serviceTypes.map((type, index) => {
       return (
         <div key={index} className='task__service-type'
                          onClick={()=>{this.loadServices(type)}} data-type-name={type}>
-          <div>
+          <div className={this.isActive(type) ? 'active-type-service' : ''}>
             <img src={this.state.referenceToImages[type]} />
           </div>
           <p className='task__service-type-name'> {type} </p>
@@ -187,7 +190,9 @@ class FormTask extends React.Component {
                 <div className='task__form-info' id='task-services'>
                 <Services services={this.props.servicesContainer.services}
                           task={this.props.tasksContainer.task}
-                          errors={this.props.tasksContainer.errors.service} />
+                          errors={this.props.tasksContainer.errors.service}
+                          serviceId={this.state.activeServiceId}
+                          setServiceId={this.setServiceId} />
                 </div>
 
                 <div className='task__form-info'>
