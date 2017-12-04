@@ -124,7 +124,6 @@ class FormTask extends React.Component {
           Toastr.error(error);
         });
     }
-    this.props.actions.setServiceId(null);
     $('.service-name').removeClass('active-service');
   }
 
