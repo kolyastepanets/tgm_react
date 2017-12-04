@@ -14,6 +14,6 @@ $ foreman start -f Procfile.dev
 - email: admin@example.com
 - password: Testing1
 
-#### Or check
+#### Or
 
 - Go to [heroku](https://safe-everglades-57796.herokuapp.com/)
