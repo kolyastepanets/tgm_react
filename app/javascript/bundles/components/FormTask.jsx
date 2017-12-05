@@ -189,7 +189,6 @@ class FormTask extends React.Component {
 
                 <div className='task__form-info' id='task-services'>
                 <Services services={this.props.servicesContainer.services}
-                          task={this.props.tasksContainer.task}
                           errors={this.props.tasksContainer.errors.service}
                           serviceId={this.state.activeServiceId}
                           setServiceId={this.setServiceId} />

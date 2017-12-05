@@ -22,8 +22,19 @@ const cookiesOnServer = (req, res) => ({
   }
 });
 
+function setUpCookies(response) {
+  if (response.url.includes('auth/sign_in')) {
+    let cookiesManager = cookiesOnClient()
+    cookiesManager.set('access-token', response.headers.get('access-token'));
+    cookiesManager.set('uid', response.headers.get('uid'));
+    cookiesManager.set('expiry', response.headers.get('expiry'));
+    cookiesManager.set('token-type', response.headers.get('token-type'));
+    cookiesManager.set('client', response.headers.get('client'));
+  }
+}
+
 function checkStatus(response) {
-  if (response.url.indexOf('auth/sign_out') > 0 ) {
+  if (response.url.includes('auth/sign_out')) {
     location.reload()
     return response;
   } else if (response.status >= 200 && response.status < 300) {
@@ -65,18 +76,10 @@ function createRequestPromise(method, url, data, cookiesManager) {
   options.method = method;
   options.headers = isHeadersValid(authHeaders) ? authHeaders : new Headers({'Accept': 'application/json', 'Content-Type': 'application/json'});
   options.body = data ? data.data : null;
-  options.credentials = 'include';
 
-  return fetch(`http://localhost:3000${url}`, options)
+  return fetch(`https://safe-everglades-57796.herokuapp.com${url}`, options)
     .then((response) => {
-      if (isHeadersValid(response.headers)) {
-        cookiesManager.set('access-token', response.headers.get('access-token'));
-        cookiesManager.set('uid', response.headers.get('uid'));
-        cookiesManager.set('expiry', response.headers.get('expiry'));
-        cookiesManager.set('token-type', response.headers.get('token-type'));
-        cookiesManager.set('client', response.headers.get('client'));
-      }
-
+      setUpCookies(response)
       return response;
     })
     .then(checkStatus)
