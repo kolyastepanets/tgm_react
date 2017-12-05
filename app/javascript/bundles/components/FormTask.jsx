@@ -14,8 +14,6 @@ class FormTask extends React.Component {
 
     this.state = {
       address: '',
-      activeServiceType: this.props.tasksContainer.task.service.classification,
-      activeServiceId: this.props.tasksContainer.task.service.id,
       geocoder: new google.maps.Geocoder(),
       markerImage: 'https://res.cloudinary.com/djnzkhyxr/image/upload/v1498079839/pointer_iw70le.png',
       title: this.props.tasksContainer.task.title,
@@ -36,7 +34,16 @@ class FormTask extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ title: nextProps.tasksContainer.task.title });
+    this.setState({
+      title: nextProps.tasksContainer.task.title,
+      activeServiceId: nextProps.tasksContainer.task.service.id
+    });
+
+    if (nextProps.servicesContainer.services[0]) {
+      this.setState({
+        activeServiceType: nextProps.servicesContainer.services[0].classification
+      });
+    }
 
     if (nextProps.tasksContainer.showForm &&
           nextProps.tasksContainer.task.id){
@@ -45,7 +52,6 @@ class FormTask extends React.Component {
         lng: (nextProps.tasksContainer.task.longtitude)
       }
       this.setState({
-        markerExists: true,
         latitude: nextProps.tasksContainer.task.latitude,
         longtitude: nextProps.tasksContainer.task.longtitude
       });
@@ -57,7 +63,6 @@ class FormTask extends React.Component {
         lat: 48.463819,
         lng: 35.053189
       }
-      this.setState({ markerExists: true });
       this.reDrawMarker(position);
     }
   }
@@ -140,8 +145,8 @@ class FormTask extends React.Component {
   }
 
   loadServices(type) {
+    this.setState({ activeServiceType: type });
     this.props.actions.loadServices(type);
-    this.setState({ activeServiceType: type })
   }
 
   handleChange(value) {

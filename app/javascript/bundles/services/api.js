@@ -77,6 +77,7 @@ function createRequestPromise(method, url, data, cookiesManager) {
   options.headers = isHeadersValid(authHeaders) ? authHeaders : new Headers({'Accept': 'application/json', 'Content-Type': 'application/json'});
   options.body = data ? data.data : null;
 
+  // dynamic change url in case of environment
   return fetch(`https://safe-everglades-57796.herokuapp.com${url}`, options)
     .then((response) => {
       setUpCookies(response)

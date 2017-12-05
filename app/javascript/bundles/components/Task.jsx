@@ -3,7 +3,6 @@ import * as TaskActions from '../actions/taskActions';
 import * as ServiceActions from '../actions/serviceActions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import $ from 'jquery';
 
 class Task extends React.Component {
   handleDelete (id) {
@@ -14,12 +13,6 @@ class Task extends React.Component {
     this.props.actions.showForm();
     this.props.actions.initializeTask(task);
     this.props.actions.loadServices(task.service.classification);
-    this.addActiveClassToServiceType(task.service.classification);
-  }
-
-  addActiveClassToServiceType(type) {
-    $('.active-type-service').removeClass('active-type-service')
-    $(`[data-type-name="${type}"] div`).addClass('active-type-service');
   }
 
   render() {
@@ -40,7 +33,7 @@ class Task extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({...TaskActions, ...ServiceActions }, dispatch)
+  actions: bindActionCreators({ ...TaskActions, ...ServiceActions }, dispatch)
 });
 
 export default connect(null, mapDispatchToProps)(Task)
