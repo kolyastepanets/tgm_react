@@ -23,7 +23,7 @@ const cookiesOnServer = (req, res) => ({
 });
 
 function setUpCookies(response) {
-  if (response.url.includes('auth/sign_in')) {
+  if (response.url.includes('auth/sign_in') || response.url.includes('auth/')) {
     let cookiesManager = cookiesOnClient()
     cookiesManager.set('access-token', response.headers.get('access-token'));
     cookiesManager.set('uid', response.headers.get('uid'));

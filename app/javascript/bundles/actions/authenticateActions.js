@@ -37,7 +37,8 @@ export const signUp = (email, password, confirm_password) => {
     })
     .then(() => {
       dispatch(signUpSuccess());
-    }).catch(errors => {
+    })
+    .catch(errors => {
       throw errors;
     });
   };
